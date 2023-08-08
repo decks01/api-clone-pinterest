@@ -13,7 +13,6 @@ export const getProducts =async (req, res) => {
           cat: true,
         },
       });
-  console.log('entre a getproduct', publicacion);
 
       res.send(publicacion);
     } catch (error) {

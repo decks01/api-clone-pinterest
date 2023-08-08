@@ -67,7 +67,7 @@ app.get("/", (req, res) => {
 
 //--files
 // app.use("/products/file", fileServer(urlArchivos))
-const CURRENT_DIR = dirname(fileURLToPath(import.meta.url));
+const CURRENT_DIR = dirname(fileURLToPath(import.meta.url)); 
 
 app.use("/login",login );
 app.use("/users", usersRoutes);

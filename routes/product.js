@@ -92,8 +92,8 @@ router.post('/uploading', multerUpload.single('imagen'), async (req, res) => {
       idUser: idpaser,
       nombre,
       descripcion,
-      like: likeparser,
-      guardado,
+      like: 0,
+      guardado: false,
       imagen: imagenUpdate, 
     }, 
   }); 

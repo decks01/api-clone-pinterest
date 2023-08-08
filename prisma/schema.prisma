@@ -36,7 +36,7 @@ model Categorias {
 
 model Publicacion {
   idProds Int @id @default(autoincrement())
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) 
   idCat Int
   idUser Int
   nombre String
