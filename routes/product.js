@@ -24,44 +24,44 @@ router.post('/upload', multerUpload.single('imagen'),  (req, res) => {
 });
 const CURRENT_DIR = dirname(fileURLToPath(import.meta.url));
 
-router.put('/uploading/:id', multerUpload.single('imagen'), async (req, res) => {
-        try {
+// router.put('/uploading/:id', multerUpload.single('imagen'), async (req, res) => {
+//         try {
     
-        console.log('CURRENT_DIRCURRENT_DIRCURRENT_DIR',CURRENT_DIR);
-            console.log("req.body ESTE EL REQ IMAGEN ---------------------",req.file);
-          console.log("create entre");
-        //   const {imagen} = req.body;
+//         console.log('CURRENT_DIRCURRENT_DIRCURRENT_DIR',CURRENT_DIR);
+//             console.log("req.body ESTE EL REQ IMAGEN ---------------------",req.file);
+//           console.log("create entre");
+//         //   const {imagen} = req.body;
           
-          console.log("ESTA ES LA DATA DE LA IMAGEN");   
+//           console.log("ESTA ES LA DATA DE LA IMAGEN");   
           
-          const imagenUpdate =  join( 'public/images/'+req.file.filename ) 
-        //   const imagenUpdate = `${CURRENT_DIR, req.file.filename}`
-        const { id } = req.params;
+//           const imagenUpdate =  join( 'public/images/'+req.file.filename ) 
+//         //   const imagenUpdate = `${CURRENT_DIR, req.file.filename}`
+//         const { id } = req.params;
             
-          const publicacion = await prisma.publicacion.update({
-            where: {
-              idProds: Number(id)
-            },
-            data: {
-                imagen: imagenUpdate,
-            },
-          });
+//           const publicacion = await prisma.publicacion.update({
+//             where: {
+//               idProds: Number(id)
+//             },
+//             data: {
+//                 imagen: imagenUpdate,
+//             },
+//           });
 
-          if(publicacion){
-            res.status(200).send("SE CREO LA IMAGEN");
-          }
-          console.log("publicacion CREATE", publicacion);  
-        } catch (error) {
-          console.log(error); 
-          // res.send("NO SE PUDO CREAR ESTE PRODUCTO");
-          res.send("No se pudo actualizar la imagen"); 
-        }
+//           if(publicacion){
+//             res.status(200).send("SE CREO LA IMAGEN");
+//           }
+//           console.log("publicacion CREATE", publicacion);  
+//         } catch (error) {
+//           console.log(error); 
+//           // res.send("NO SE PUDO CREAR ESTE PRODUCTO");
+//           res.send("No se pudo actualizar la imagen"); 
+//         }
       
 
-    //   createProductImage()
+//     //   createProductImage()
 
 
-});
+// });
 
 
 
@@ -70,22 +70,22 @@ router.post('/uploading', multerUpload.single('imagen'), async (req, res) => {
   try {
 
   console.log('CURRENT_DIRCURRENT_DIRCURRENT_DIR',CURRENT_DIR);
-      console.log("req.body ESTE EL REQ IMAGEN ---------------------",req.file);
+      console.log("req.body ESTE EL REQ IMAGEN ---------------------",req?.file);
     console.log("create entre");
   //   const {imagen} = req.body;
     
     console.log("ESTA ES LA DATA DE LA IMAGEN");   
     
-    const imagenUpdate =  join( 'public/images/'+req.file.filename ) 
+    const imagenUpdate =  join( 'public/images/'+req?.file?.filename ) 
   //   const imagenUpdate = `${CURRENT_DIR, req.file.filename}`
-  const {idCat,idUser,nombre,descripcion,like,guardado,imagen} = req.body;
+  const {idCat,idUser,nombre,descripcion,like,guardado} = req.body;
   
     
 
   const idCatParse = parseInt(idCat);
   const idpaser = parseInt(idUser);
   const likeparser = parseFloat(like);
-
+ 
   const publicacion = await prisma.publicacion.create({
     data: {
       idCat: idCatParse,
@@ -94,7 +94,7 @@ router.post('/uploading', multerUpload.single('imagen'), async (req, res) => {
       descripcion,
       like: 0,
       guardado: false,
-      imagen: imagenUpdate, 
+      imagen: imagenUpdate ? imagenUpdate : '' , 
     }, 
   }); 
 
@@ -114,6 +114,60 @@ router.post('/uploading', multerUpload.single('imagen'), async (req, res) => {
 
 
 });
+
+
+router.put('/uploading/:id', multerUpload.single('imagen'), async (req, res) => {
+  try {
+
+  console.log('CURRENT_DIRCURRENT_DIRCURRENT_DIR',CURRENT_DIR);
+      console.log("req.body ESTE EL REQ IMAGEN ---------------------",req?.file);
+    console.log("create entre");
+  //   const {imagen} = req.body;
+  const { id } = req.params;
+    
+    console.log("ESTA ES LA DATA DE LA IMAGEN");   
+    
+    const imagenUpdate =  join( 'public/images/'+req?.file?.filename ) 
+  //   const imagenUpdate = `${CURRENT_DIR, req.file.filename}`
+  const {idProds, idCat,idUser,nombre,descripcion,like,guardado} = req.body;
+  
+    
+
+  const idCatParse = parseInt(idCat);
+  const idpaser = parseInt(idUser);
+  const likeparser = parseFloat(like);     
+  const guarda = new Boolean(guardado); 
+ 
+  const publicacion = await prisma.publicacion.update({
+    where: { idProds: Number(id) },
+    data: {
+      idCat: idCatParse,
+      idUser: idpaser,
+      nombre,
+      descripcion,
+      like: likeparser,
+      // guardado: true ,
+      imagen: imagenUpdate ? imagenUpdate : '' , 
+    }, 
+  }); 
+
+
+    if(publicacion){  
+      // res.status(200).send("SE CREO LA IMAGEN");
+    }
+    console.log("publicacion EDIT");   
+  } catch (error) {
+    console.log(error);    
+    // res.send("NO SE PUDO CREAR ESTE PRODUCTO");
+    res.send("No se pudo editar la imagen", error);  
+  }
+
+
+//   createProductImage()
+
+
+});
+
 
 
 
